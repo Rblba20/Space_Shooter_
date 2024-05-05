@@ -13,16 +13,26 @@
         android:src="@drawable/space_shooter_main_menu_background" />
 
     <ImageView
-        android:layout_margin="16dp"
         android:id="@+id/back"
-        android:src="@drawable/arrow_left_circle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/arrow_left_circle" />
     <LinearLayout
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -37,7 +47,7 @@
         <TextView
             android:id="@+id/null_high_score"
             android:layout_marginTop="16dp"
-            android:text="Belum ada high score"
+            android:text="Your highest score"
             android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -108,6 +118,24 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="List of 10 top scores"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+</LinearLayout>
     </LinearLayout>
+
 
 </RelativeLayout>

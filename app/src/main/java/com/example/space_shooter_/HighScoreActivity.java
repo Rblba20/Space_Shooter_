@@ -7,16 +7,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HighScoreActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mBack;
     private TextView mScore, mMeteor, mEnemy, mNullHighScore;
     private LinearLayout mHighScoreContainer;
+    private RecyclerView mRecyclerView;
+    private ScoreAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Здесь нужно получить 10 лучших результатов из базы данных Firebase и передать их в адаптер
+        List<Score> topScores = getTopScores(); // Функцию getTopScores() нужно реализовать
+        mAdapter = new ScoreAdapter(topScores);
+        mRecyclerView.setAdapter(mAdapter);
 
         mBack = findViewById(R.id.back);
         mScore = findViewById(R.id.score);
@@ -27,6 +44,17 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         mBack.setOnClickListener(this);
 
         loadHighScore();
+    }
+
+    private List<Score> getTopScores() {
+        // Здесь можно сделать запрос к базе данных Firebase, чтобы получить 10 лучших результатов
+        // На данный момент вместо реального запроса возвращается фиктивный список результатов для демонстрации
+        List<Score> topScores = new ArrayList<>();
+        topScores.add(new Score("Player 1", 100));
+        topScores.add(new Score("Player 2", 90));
+        topScores.add(new Score("Player 3", 80));
+        // Добавьте остальные результаты по аналогии
+        return topScores;
     }
 
     void loadHighScore(){

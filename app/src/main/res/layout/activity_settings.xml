@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/space_shooter_main_menu_background" />
+
+    <!-- Метка для уровня громкости музыки -->
+    <TextView
+        android:id="@+id/musicVolumeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Music Volume"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/white"/>
+
+    <!-- Ползунок для уровня громкости музыки -->
+    <SeekBar
+        android:id="@+id/musicVolumeSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/musicVolumeLabel"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/white"/>
+
+    <!-- Метка для уровня громкости звуков -->
+    <TextView
+        android:id="@+id/soundVolumeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sound Volume"
+        android:layout_below="@id/musicVolumeSeekBar"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/white"/>
+
+    <!-- Ползунок для уровня громкости звуков -->
+    <SeekBar
+        android:id="@+id/soundVolumeSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/soundVolumeLabel"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/white"/>
+
+    <!-- Группа переключателей для выбора управления -->
+    <RadioGroup
+        android:id="@+id/controlRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/soundVolumeSeekBar"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose way of control"
+            android:layout_below="@id/musicVolumeSeekBar"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"/>
+
+        <!-- Переключатель для первого варианта управления -->
+        <RadioButton
+            android:id="@+id/controlOption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Control Option 1"/>
+
+        <!-- Переключатель для второго варианта управления -->
+        <RadioButton
+            android:id="@+id/controlOption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Control Option 2"/>
+    </RadioGroup>
+
+    <!-- Поле для ввода имени -->
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/controlRadioGroup"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Enter Your Name"
+        android:background="@android:color/white"/>
+
+    <!-- Кнопка для сохранения изменений -->
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Save Changes"/>
+</RelativeLayout>

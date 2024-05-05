@@ -1,6 +1,8 @@
 package com.example.space_shooter_;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.hardware.Sensor;
@@ -11,16 +13,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
     private GameView mGameView;
     private float mXTemp;
 
+/*    private int mTotalScore = 0; // Общий счетчик очков
+
+    private TextView mTotalScoreTextView; // TextView для отображения общего счетчика очков
+    private static final int GAME_ACTIVITY_REQUEST_CODE = 1;*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+/*
+        setContentView(R.layout.activity_main);
+
+        mTotalScoreTextView = findViewById(R.id.total_score_text_view);
+
+        // Восстановить общий счетчик очков из SharedPreferences
+        mTotalScore = loadTotalScore();
+
+        // Обновить TextView для отображения общего счетчика очков
+        mTotalScoreTextView.setText(String.valueOf(mTotalScore));*/
+
         //Membuat tampilan menjadi full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -47,6 +67,38 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onResume();
         mGameView.resume();
     }
+/*
+    public void startGameActivity(View view) {
+        Intent intent = new Intent(this, GameView.class);
+        startActivityForResult(intent, GAME_ACTIVITY_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GAME_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            int scoreFromGame = data.getIntExtra("score", 0);
+            mTotalScore += scoreFromGame;
+
+            // Сохранить общий счетчик очков в SharedPreferences
+            saveTotalScore(mTotalScore);
+
+            // Обновить TextView для отображения общего счетчика очков
+            mTotalScoreTextView.setText(String.valueOf(mTotalScore));
+        }
+    }
+
+    private void saveTotalScore(int totalScore) {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("totalScore", totalScore);
+        editor.apply();
+    }
+
+    private int loadTotalScore() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        return sharedPreferences.getInt("totalScore", 0);
+    }*/
 
     @Override
     protected void onPause() {
