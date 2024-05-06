@@ -12,7 +12,7 @@ import android.widget.Button;
 
 public class MainMenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button mPlay, mHighScore, mExit;
+    private Button mPlay, mHighScore, mExit, mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +28,12 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
         mPlay = findViewById(R.id.play);
         mHighScore = findViewById(R.id.high_score);
         mExit = findViewById(R.id.exit);
+        mSettings = findViewById(R.id.settings);
 
         mPlay.setOnClickListener(this);
         mHighScore.setOnClickListener(this);
         mExit.setOnClickListener(this);
+        mSettings.setOnClickListener(this);
     }
 
     @Override
@@ -43,6 +45,9 @@ public class MainMenuActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.high_score:
                 startActivity(new Intent(this, HighScoreActivity.class));
+                break;
+            case R.id.settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.exit:
                 finish();

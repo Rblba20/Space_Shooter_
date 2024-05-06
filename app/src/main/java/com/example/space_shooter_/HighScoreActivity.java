@@ -21,6 +21,8 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView mRecyclerView;
     private ScoreAdapter mAdapter;
 
+    private FirebaseHandler FireBase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,10 +51,11 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     private List<Score> getTopScores() {
         // Здесь можно сделать запрос к базе данных Firebase, чтобы получить 10 лучших результатов
         // На данный момент вместо реального запроса возвращается фиктивный список результатов для демонстрации
-        List<Score> topScores = new ArrayList<>();
+        List<Score> topScores  = FireBase.fetchScores();
+/*        List<Score> topScores = new ArrayList<>();
         topScores.add(new Score("Player 1", 100));
         topScores.add(new Score("Player 2", 90));
-        topScores.add(new Score("Player 3", 80));
+        topScores.add(new Score("Player 3", 80));*/
         // Добавьте остальные результаты по аналогии
         return topScores;
     }

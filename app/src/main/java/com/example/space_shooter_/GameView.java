@@ -33,6 +33,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int mCounter = 0;
     private SoundPlayer mSoundPlayer;
     private SharedPreferencesManager mSP;
+
+    private SettingsActivity mName;
+
+    private FirebaseHandler DBHandler;
     public static int SCORE = 0;
     public static int METEOR_DESTROYED = 0;
     public static int ENEMY_DESTROYED = 0;
@@ -49,6 +53,8 @@ public class GameView extends SurfaceView implements Runnable {
         mSoundPlayer = new SoundPlayer(context);
         mPaint = new Paint();
         mSurfaceHolder = getHolder();
+        mName = new SettingsActivity(context);
+        DBHandler = new FirebaseHandler();
 
         reset();
     }
@@ -223,6 +229,10 @@ public class GameView extends SurfaceView implements Runnable {
         highScore.setTextSize(50);
         highScore.setTextAlign(Paint.Align.CENTER);
         highScore.setColor(Color.WHITE);
+        String name = mName.getName();
+        int score = mSP.getHighScore();
+        DBHandler.saveScore(name, score);
+
         if (mNewHighScore){
             mCanvas.drawText("New High Score : " + mSP.getHighScore(), mScreenSizeX / 2, (mScreenSizeY / 2) + 60, highScore);
             Paint enemyDestroyed = new Paint();

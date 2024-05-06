@@ -1,51 +1,70 @@
 package com.example.space_shooter_;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseHandler {
-
     private DatabaseReference mDatabase;
 
     public FirebaseHandler() {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("scores");
     }
 
-    public void saveScore(String playerName, int score) {
-        String gameId = mDatabase.push().getKey();
-
-        Map<String, Object> scoreMap = new HashMap<>();
-        scoreMap.put("playerName", playerName);
-        scoreMap.put("score", score);
-       // scoreMap.put("timestamp", timestamp);
-
-        mDatabase.child(gameId).setValue(scoreMap);
-    }
-
-
-    public void fetchScores() {
-        mDatabase.orderByChild("score").limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void saveScore(final String playerName, final int score) {
+        Thread saveThread = new Thread(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot scoreSnapshot : dataSnapshot.getChildren()) {
-                    String playerName = scoreSnapshot.child("playerName").getValue(String.class);
-                    int score = scoreSnapshot.child("score").getValue(Integer.class);
-                 //   String timestamp = scoreSnapshot.child("timestamp").getValue(String.class);
+            public void run() {
+                String gameId = mDatabase.push().getKey();
 
-                    // Вывести результаты или использовать их по вашему усмотрению
-                    System.out.println("Player: " + playerName + ", Score: " + score);
-                }
-            }
+                Map<String, Object> scoreMap = new HashMap<>();
+                scoreMap.put("playerName", playerName);
+                scoreMap.put("score", score);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Обработка ошибок
+                mDatabase.child(gameId).setValue(scoreMap);
             }
         });
+        saveThread.start();
+    }
+
+    public List<Score> fetchScores() {
+        List<Score> topScores = new ArrayList<>();
+        Thread fetchThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.orderByChild("score").limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot scoreSnapshot : dataSnapshot.getChildren()) {
+                            String playerName = scoreSnapshot.child("playerName").getValue(String.class);
+                            int score = scoreSnapshot.child("score").getValue(Integer.class);
+
+                            // Вывести результаты или использовать их по вашему усмотрению
+                            Log.d("FirebaseHandler", "Player: " + playerName + ", Score: " + score);
+
+                            topScores.add(new Score(playerName, score));
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Обработка ошибок при чтении данных
+                        Log.e("MainActivity", "Failed to read value.", databaseError.toException());
+                    }
+                });
+            }
+        });
+        fetchThread.start();
+        return topScores;
     }
 }
