@@ -2,6 +2,7 @@ package com.example.space_shooter_;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,7 +22,7 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView mRecyclerView;
     private ScoreAdapter mAdapter;
 
-    private FirebaseHandler FireBase;
+    private FirebaseHandler mFirebaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,13 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Здесь нужно получить 10 лучших результатов из базы данных Firebase и передать их в адаптер
-        List<Score> topScores = getTopScores(); // Функцию getTopScores() нужно реализовать
-        mAdapter = new ScoreAdapter(topScores);
-        mRecyclerView.setAdapter(mAdapter);
+        if (mFirebaseHandler == null) {
+            mFirebaseHandler = new FirebaseHandler();
+        }
+        //  List<Score> topScores = getTopScores(); // Функцию getTopScores() нужно реализовать
+        getTopScores();
+     //   mAdapter = new ScoreAdapter(topScores);
+     //   mRecyclerView.setAdapter(mAdapter);
 
         mBack = findViewById(R.id.back);
         mScore = findViewById(R.id.score);
@@ -48,16 +53,34 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         loadHighScore();
     }
 
-    private List<Score> getTopScores() {
+   // private List<Score> getTopScores() {
+   private void getTopScores() {
+        if (mFirebaseHandler == null) {
+            mFirebaseHandler = new FirebaseHandler();
+        }
         // Здесь можно сделать запрос к базе данных Firebase, чтобы получить 10 лучших результатов
         // На данный момент вместо реального запроса возвращается фиктивный список результатов для демонстрации
-        List<Score> topScores  = FireBase.fetchScores();
+        mFirebaseHandler.fetchScores(new FirebaseHandler.ScoreFetchCallback() {
+            @Override
+            public void onScoresFetched(List<Score> topScores) {
+                // После получения данных из Firebase обновите RecyclerView
+                mAdapter = new ScoreAdapter(topScores);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Обработайте ошибку, если не удалось получить данные из Firebase
+                Log.e("HighScoreActivity", "Error fetching scores: " + errorMessage);
+            }
+        });
+        //   List<Score> topScores  = mFirebaseHandler.fetchScores();
 /*        List<Score> topScores = new ArrayList<>();
         topScores.add(new Score("Player 1", 100));
         topScores.add(new Score("Player 2", 90));
         topScores.add(new Score("Player 3", 80));*/
         // Добавьте остальные результаты по аналогии
-        return topScores;
+      //  return topScores;
     }
 
     void loadHighScore(){

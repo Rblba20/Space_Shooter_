@@ -3,6 +3,7 @@ package com.example.space_shooter_;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -34,6 +35,8 @@ public class GameView extends SurfaceView implements Runnable {
     private SoundPlayer mSoundPlayer;
     private SharedPreferencesManager mSP;
 
+    private SharedPreferencesManager mSP_;
+
     private SettingsActivity mName;
 
     private FirebaseHandler DBHandler;
@@ -43,18 +46,25 @@ public class GameView extends SurfaceView implements Runnable {
     private volatile boolean mIsGameOver;
     private volatile boolean mNewHighScore;
 
-    public GameView(Context context, int screenSizeX, int screenSizeY) {
+    private Context mContext;
+   // public String name;
+
+    public GameView(Context context, int screenSizeX, int screenSizeY, Context appContext) {
         super(context);
 
         mScreenSizeX = screenSizeX;
         mScreenSizeY = screenSizeY;
         mSP = new SharedPreferencesManager(context);
+        mSP_ = new SharedPreferencesManager(appContext);
 
         mSoundPlayer = new SoundPlayer(context);
         mPaint = new Paint();
         mSurfaceHolder = getHolder();
         mName = new SettingsActivity(context);
         DBHandler = new FirebaseHandler();
+
+        mContext = context;
+        //name = mName.getName();
 
         reset();
     }
@@ -229,9 +239,17 @@ public class GameView extends SurfaceView implements Runnable {
         highScore.setTextSize(50);
         highScore.setTextAlign(Paint.Align.CENTER);
         highScore.setColor(Color.WHITE);
-        String name = mName.getName();
-        int score = mSP.getHighScore();
-        DBHandler.saveScore(name, score);
+
+
+      //  String name = mName.getName();
+        //   int score = mSP.getHighScore();
+
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences("player_prefs", Context.MODE_PRIVATE);
+        String playerName = sharedPreferences.getString("player_name", "");
+
+
+        DBHandler.saveScore(playerName, SCORE);
+
 
         if (mNewHighScore){
             mCanvas.drawText("New High Score : " + mSP.getHighScore(), mScreenSizeX / 2, (mScreenSizeY / 2) + 60, highScore);

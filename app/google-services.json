@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "497140695075",
+    "firebase_url": "https://space-shooter-db-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "space-shooter-db",
     "storage_bucket": "space-shooter-db.appspot.com"
   },
