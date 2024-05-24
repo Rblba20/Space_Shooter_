@@ -12,7 +12,33 @@
         android:scaleType="centerCrop"
         android:src="@drawable/space_shooter_main_menu_background" />
 
-    <!-- Метка для уровня громкости музыки -->
+    <!-- Надпись настройки -->
+    <TextView
+        android:id="@+id/settingsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"/>
+
+    <!-- Надпись о дальнейшем развитии -->
+    <TextView
+        android:id="@+id/futureUpdatesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="More settings and features will be added in future updates as the game is in development."
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@id/settingsTitle"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"/>
+
+    <!-- Закомментировано: Метка для уровня громкости музыки -->
+    <!--
     <TextView
         android:id="@+id/musicVolumeLabel"
         android:layout_width="wrap_content"
@@ -21,8 +47,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:background="@android:color/white"/>
+    -->
 
-    <!-- Ползунок для уровня громкости музыки -->
+    <!-- Закомментировано: Ползунок для уровня громкости музыки -->
+    <!--
     <SeekBar
         android:id="@+id/musicVolumeSeekBar"
         android:layout_width="match_parent"
@@ -31,8 +59,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/white"/>
+    -->
 
-    <!-- Метка для уровня громкости звуков -->
+    <!-- Закомментировано: Метка для уровня громкости звуков -->
+    <!--
     <TextView
         android:id="@+id/soundVolumeLabel"
         android:layout_width="wrap_content"
@@ -42,8 +72,10 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:background="@android:color/white"/>
+    -->
 
-    <!-- Ползунок для уровня громкости звуков -->
+    <!-- Закомментировано: Ползунок для уровня громкости звуков -->
+    <!--
     <SeekBar
         android:id="@+id/soundVolumeSeekBar"
         android:layout_width="match_parent"
@@ -52,13 +84,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/white"/>
+    -->
 
     <!-- Группа переключателей для выбора управления -->
     <RadioGroup
         android:id="@+id/controlRadioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/soundVolumeSeekBar"
+        android:layout_below="@id/futureUpdatesLabel"
         android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:layout_marginStart="16dp"
@@ -69,23 +102,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose way of control"
-            android:layout_below="@id/musicVolumeSeekBar"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="16dp"
+            android:background="@android:color/transparent"/>
 
         <!-- Переключатель для первого варианта управления -->
         <RadioButton
-            android:id="@+id/controlOption1"
+            android:id="@+id/radio_button_touch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Control Option 1"/>
+            android:text="Control by tilting the phone"
+            android:background="@android:color/transparent"/>
 
         <!-- Переключатель для второго варианта управления -->
         <RadioButton
-            android:id="@+id/controlOption2"
+            android:id="@+id/radio_button_accelerometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Control Option 2"/>
+            android:text="Control by tapping on the screen"
+            android:background="@android:color/transparent"/>
     </RadioGroup>
 
     <!-- Поле для ввода имени -->

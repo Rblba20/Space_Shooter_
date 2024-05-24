@@ -45,12 +45,15 @@ public class GameView extends SurfaceView implements Runnable {
     public static int ENEMY_DESTROYED = 0;
     private volatile boolean mIsGameOver;
     private volatile boolean mNewHighScore;
+    public float mTouchX;
 
     private Context mContext;
    // public String name;
 
     public GameView(Context context, int screenSizeX, int screenSizeY, Context appContext) {
         super(context);
+
+
 
         mScreenSizeX = screenSizeX;
         mScreenSizeY = screenSizeY;
@@ -94,6 +97,22 @@ public class GameView extends SurfaceView implements Runnable {
         }
         Log.d("GameThread", "Run stopped");
     }
+
+/*    public boolean onTouch(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (event.getX() < getWidth() / 2) {
+                    mPlayer.startMovingLeft();
+                } else {
+                    mPlayer.startMovingRight();
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                mPlayer.stopMoving();
+                break;
+        }
+        return true;
+    }*/
 
     public void update() {
         mPlayer.update();
@@ -246,6 +265,11 @@ public class GameView extends SurfaceView implements Runnable {
 
         SharedPreferences sharedPreferences = mContext.getSharedPreferences("player_prefs", Context.MODE_PRIVATE);
         String playerName = sharedPreferences.getString("player_name", "");
+        if(playerName.equals("")){
+            Random random = new Random();
+            int randomNumber = random.nextInt(1000000);
+            playerName =  "Player" + randomNumber;
+        }
 
 
         DBHandler.saveScore(playerName, SCORE);
@@ -309,7 +333,38 @@ public class GameView extends SurfaceView implements Runnable {
         mGameThread.start();
     }
 
+
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                if (mIsGameOver) {
+                    ((Activity) getContext()).finish();
+                    getContext().startActivity(new Intent(getContext(), MainMenuActivity.class));
+                } else {
+                    /*mTouchX = event.getX();
+                    mPlayer.updateTouchX(mTouchX);*/
+                    if (event.getX() < getWidth() / 2) {
+                        steerLeft(1.5F);
+                        mPlayer.setTouchX(event.getX());
+                    } else {
+                        steerRight(1.5F);
+                        mPlayer.setTouchX(event.getX());
+                    }
+                }
+
+                    break;
+                }
+
+             return super.onTouchEvent(event);
+        }
+
+    public int getControlType(){
+        return mPlayer.getControlType();
+    }
+
+   /* @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -320,5 +375,50 @@ public class GameView extends SurfaceView implements Runnable {
                 break;
         }
         return super.onTouchEvent(event);
-    }
+    } */
+
+
+    /*@Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (mIsGameOver) {
+                    ((Activity) getContext()).finish();
+                    getContext().startActivity(new Intent(getContext(), MainMenuActivity.class));
+                } else {
+                    // Проверяем, выбран ли второй вариант управления
+                    if (mPlayer.getControlType() == 2) {
+                        // Если да, то обрабатываем нажатие на экран для перемещения игрока
+                        if (event.getX() < getWidth() / 2) {
+                            mPlayer.startMovingLeft();
+                        } else {
+                            mPlayer.startMovingRight();
+                        }
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (mIsGameOver) {
+                    ((Activity) getContext()).finish();
+                    getContext().startActivity(new Intent(getContext(), MainMenuActivity.class));
+                } else {
+                    // Проверяем, выбран ли второй вариант управления
+                    if (mPlayer.getControlType() == 2) {
+                        // Если да, то обрабатываем перемещение пальца по экрану для плавного движения игрока
+                        if (event.getX() < getWidth() / 2) {
+                            mPlayer.moveLeft();
+                        } else {
+                            mPlayer.moveRight();
+                        }
+                    }
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                // Обработка отпускания пальца
+                mPlayer.stopMoving();
+                break;
+        }
+        return true;
+    }*/
+
 }

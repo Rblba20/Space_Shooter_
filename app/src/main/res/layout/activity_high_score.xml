@@ -124,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="List of 10 top scores"
+            android:text="List top scores"
             android:textColor="@android:color/white"
             android:textSize="22sp"/>
 

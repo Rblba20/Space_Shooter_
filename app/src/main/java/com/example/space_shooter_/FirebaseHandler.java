@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class FirebaseHandler {
         return topScores;
     }*/
 
-    public void fetchScores(final ScoreFetchCallback callback) {
+    /*   public void fetchScores(final ScoreFetchCallback callback) {
         mDatabase.orderByChild("score").limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -82,9 +83,11 @@ public class FirebaseHandler {
                     Log.d("FirebaseHandler", "Player: " + playerName + ", Score: " + score);
                     topScores.add(new Score(playerName, score));
                 }
+                Collections.reverse(topScores);
                 // Передаем полученные данные через коллбэк
                 callback.onScoresFetched(topScores);
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -92,7 +95,38 @@ public class FirebaseHandler {
                 callback.onError(databaseError.getMessage());
             }
         });
+    } */
+
+    public void fetchScores(final ScoreFetchCallback callback) {
+        Thread fetchThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mDatabase.orderByChild("score").limitToLast(10).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<Score> topScores = new ArrayList<>();
+                        for (DataSnapshot scoreSnapshot : dataSnapshot.getChildren()) {
+                            String playerName = scoreSnapshot.child("name").getValue(String.class);
+                            int score = scoreSnapshot.child("score").getValue(Integer.class);
+                            Log.d("FirebaseHandler", "Player: " + playerName + ", Score: " + score);
+                            topScores.add(new Score(playerName, score));
+                        }
+                        Collections.reverse(topScores);
+                        // Передаем полученные данные через коллбэк
+                        callback.onScoresFetched(topScores);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Обработка ошибок
+                        callback.onError(databaseError.getMessage());
+                    }
+                });
+            }
+        });
+        fetchThread.start();
     }
+
 
     // Интерфейс для обратного вызова
     public interface ScoreFetchCallback {

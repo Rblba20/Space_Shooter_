@@ -104,15 +104,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        mXTemp = event.values[0];
+        if (mGameView.getControlType() == 1) {
+            mXTemp = event.values[0];
 
-        if (event.values[0] > 1){
-            mGameView.steerLeft(event.values[0]);
-        }
-        else if (event.values[0] < -1){
-            mGameView.steerRight(event.values[0]);
-        }else{
-            mGameView.stay();
+            if (event.values[0] > 1) {
+                mGameView.steerLeft(event.values[0]);
+            } else if (event.values[0] < -1) {
+                mGameView.steerRight(event.values[0]);
+            } else {
+                mGameView.stay();
+            }
         }
     }
 

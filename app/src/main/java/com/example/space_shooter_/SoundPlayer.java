@@ -14,7 +14,7 @@ public class SoundPlayer implements Runnable {
     private Thread mSoundThread;
     private volatile boolean mIsPlaying;
     private SoundPool mSoundPool;
-    private int mExplodeId, mLaserId, mCrashId;
+    private int mExplodeId, mLaserId, mCrashId, mMusicId;
     private boolean mIsLaserPlaying, mIsExplodePlaying, mIsCrashPlaying;
 
     public SoundPlayer(Context context){
